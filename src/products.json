@@ -1,0 +1,53 @@
+[
+  {
+    "id": 6,
+    "title": "zzzzzzzzzzzzzzzzzzzzz",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image6.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor",
+    "status": "true"
+  },
+  {
+    "id": 8,
+    "title": "ñññññññssdfsdfsf",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor",
+    "status": "true"
+  },
+  {
+    "id": 9,
+    "title": "ñññññññssdfsdfsf",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor",
+    "status": "true"
+  },{
+    "id": 8,
+    "title": "ñññññññssdfsdfsf",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor",
+    "status": "true"
+  }
+]
