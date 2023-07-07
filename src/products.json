@@ -1,20 +1,17 @@
 [
   {
-    "id": 6,
-    "title": "zzzzzzzzzzzzzzzzzzzzz",
+    "id": 4,
+    "title": "gppppppppppppppppppppppppp",
     "description": "Desc prodzz",
     "price": 123123,
-    "thumbnail": [
-      "www.image6.com"
-    ],
+    "thumbnail": [],
     "code": "abc101010",
     "stock": 10101010,
-    "category": "monitor",
-    "status": "true"
+    "category": "monitor"
   },
   {
-    "id": 8,
-    "title": "ñññññññssdfsdfsf",
+    "id": 5,
+    "title": "oooooo",
     "description": "Desc prodzz",
     "price": 123123,
     "thumbnail": [
@@ -22,12 +19,11 @@
     ],
     "code": "abc101010",
     "stock": 10101010,
-    "category": "monitor",
-    "status": "true"
+    "category": "monitor"
   },
   {
-    "id": 9,
-    "title": "ñññññññssdfsdfsf",
+    "id": 3,
+    "title": "gppppppppppppppppppppppppp",
     "description": "Desc prodzz",
     "price": 123123,
     "thumbnail": [
@@ -35,19 +31,6 @@
     ],
     "code": "abc101010",
     "stock": 10101010,
-    "category": "monitor",
-    "status": "true"
-  },{
-    "id": 8,
-    "title": "ñññññññssdfsdfsf",
-    "description": "Desc prodzz",
-    "price": 123123,
-    "thumbnail": [
-      "www.image8.com"
-    ],
-    "code": "abc101010",
-    "stock": 10101010,
-    "category": "monitor",
-    "status": "true"
+    "category": "monitor"
   }
 ]

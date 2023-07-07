@@ -38,9 +38,7 @@ const productId = async (req, res) => {
 const productAdd = async (req, res) => {
   try{
     const product = req.body;
-    //console.log(product);
     const data = await manager.addProduct(product);
-    console.log(data)
     res.send(data);
   } catch(e) {
     console.log(e);

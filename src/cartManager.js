@@ -1,8 +1,6 @@
 const fs = require("fs");
-//const {manager} = require ("./routes/productsManager")
 
-//const dataPro = manager.getProducts();
-//console.log(dataPro);
+
 const { ProductManager } = require("./productManager");
 //instacio el ProductManager
 const productsPromise = async () => {
@@ -85,54 +83,31 @@ class CartManager {
     }
   }
 
-  async addCart({ products }) {
-    try {
-      // thumbnail NO es un campo obligatorio
-      if (!products) {
-        return { Error: "Campos incompletos" };
-      }
-
-      // // parseInt(p.productId) != prod.id
-      // productsPromise().then((productsObj) => {
-      //   //console.log(productsObj)
-      //   const res = productsObj.map((productObj)=>{
-      //    console.log(productObj.id)
-      //     return products.findIndex ((product)=> productObj.id === parseInt(product.productId) )
-      //     //productObj.id != products.productId
-
-      //   })
-      //   //console.log(res)
-      //   for (let i=0; i<res.length ; i++) {
-      //     console.log(res[i])
-      //     if (res[i] == -1){
-      //       console.log("producto inexistente")
-      //       return ("producto inexistente")
-      //     }
-      //   }
-
-      // });
-
-      // const findProduct = prod.findIndex((p)=> p.productId == products.productId)
-      // console.log(findProduct)
-
-      const cart = await this.getCarts();
+  async addCart(data) {
+      try {
+      const cart = data.products
+      const carts = await this.getCarts();
+      console.log(carts)
+      console.log(cart)
+      console.log(carts.length +1 )
       const newCart = {
-        id: cart.length + 1,
-        products,
+        id: carts.length + 1,
+        products : cart
       };
-      cart.push(newCart);
-      await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2));
-      return "Carrito cargado correctamente";
+      carts.push(newCart)
+      console.log(cart)
+      await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
+      return ("Carrito cargado correctamente")
     } catch (e) {
       console.log("Error al agregar el carrito");
       return { Error: "Erro al agregar el carrito" };
     }
   }
 
-  async addCartPid(cid, products ) {
+  async addCartPid( cid, products ) {
     const productId = products.productId;
     const quantity = products.quantity;
-    const carts = await this.getCarts();
+    const cart = await this.getCarts();
     try {
       let cidNumber = parseInt(cid);
       let productIdNumber = parseInt(productId);
@@ -140,19 +115,13 @@ class CartManager {
       console.log(productId);
       console.log(quantity);
       if (!productId || !quantity) {
-        return { Error: "Debe ingresar poducto y cantidad" };
+        return { Error: "Campos incompletos" };
       }
 
-      const existCart = carts.find((ex) => ex.id === cidNumber);
+      const existCart = cart.find((ex) => ex.id === cidNumber);
       if (existCart == undefined)
         return { Error: `El carrrito con id: ${cidNumber} no existe` };
 
-      //console.log(existCart)
-      //console.log(existCart.products)
-      //console.log(existCart.products[0])
-      //console.log(productIdNumber)
-      //console.log(typeof(productIdNumber))
-      //console.log(parseInt(productIdNumber))
       let existProdId = existCart.products.findIndex(
         (prod) => prod.productId === productIdNumber
       );
@@ -161,13 +130,19 @@ class CartManager {
 
       // const exist = cart.findIndex((ex)=>ex.id==id)
       if (existProdId === -1) {
-        const newCart = {
-          id: carts.length + 1,
-          products,
-        };
-        carts.push(newCart);
-        await fs.promises.writeFile(this.path, JSON.stringify(newCart, null, 2));
-        return "Carrito cargado correctamente";
+        console.log("El Producto no existe en el carrito, se agrega")
+        console.log(cart)
+        // const newCart = {
+        //   id: cart.length + 1,
+        //   products, 
+        // };
+        // console.log(newCart)
+        // cart.push(newCart);
+        // await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2));
+        // return "Carrito cargado correctamente";
+        // carts.push(newCart);
+        // await fs.promises.writeFile(this.path, JSON.stringify(newCart, null, 2));
+        // return "Carrito cargado correctamente";
       } else {
         console.log("si existe");
       }
