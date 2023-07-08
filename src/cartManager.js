@@ -1,12 +1,11 @@
 const fs = require("fs");
 
-
 const { ProductManager } = require("./productManager");
+//const { exit } = require("process");
 //instacio el ProductManager
 const productsPromise = async () => {
   const pManager = new ProductManager("products.json");
   const prod = await pManager.getProducts();
-  //console.log(prod);
   return prod;
 };
 // let prod = products().then((d) => {
@@ -36,7 +35,7 @@ class CartManager {
       return cartsObj;
     } catch (e) {
       console.log("Error al leer el archivo Carts");
-      return { Error: "Error al leer el archivo Carts" };
+      return { Status: "Error al leer el archivo Carts" };
     }
   }
 
@@ -44,16 +43,17 @@ class CartManager {
     try {
       if (!id) {
         console.log("Debe enviar un ID valido");
-        return { Error: "Debe enviar un ID valido" };
+        return { Status: "Debe enviar un ID valido" };
       }
       const carts = await this.getCarts();
       const exist = carts.findIndex((ex) => ex.id == id);
-      if (exist === -1) return { Error: `El carrrito con id: ${id} no existe` };
+      if (exist === -1)
+        return { Status: `El carrrito con id: ${id} no existe` };
       const cartId = carts.find((p) => p.id == id);
       return cartId;
     } catch (e) {
       console.log("Error al leer el archivo carts");
-      return { Error: "Error al leer el archivo carts" };
+      return { Status: "Error al leer el archivo carts" };
     }
   }
 
@@ -61,50 +61,58 @@ class CartManager {
     try {
       if (!id) {
         console.log("Debe enviar un ID");
-        return { Error: "Debe enviar un ID" };
+        return { Status: "Debe enviar un ID" };
       }
       const cart = await this.getCarts();
       //carts.findIndex((cart) => cart.code === code)
       const exist = cart.findIndex((ex) => ex.id == id);
       if (exist === -1) {
-        console.log(`El carto con id: ${id} no existe`);
-        return { Error: `El carto con id: ${id} no existe` };
+        console.log(`El carrito con id: ${id} no existe`);
+        return { Status: `El carrito con id: ${id} no existe` };
       }
       const cartDelete = cart.filter((p) => p.id != id);
       await fs.promises.writeFile(
         this.path,
         JSON.stringify(cartDelete, null, 2)
       );
-      console.log(`El carto con id: ${id} se elimino correctamente`);
-      return `El carto con id: ${id} se elimino correctamente`;
+      console.log(`El carrito con id: ${id} se elimino correctamente`);
+      return { Status: `El carrito con id: ${id} se elimino correctamente` };
     } catch (e) {
-      console.log("Erro al eliminar el carto");
-      return { Error: "Error al eliminar el carto" };
+      console.log("Erro al eliminar el carrito");
+      return { Status: "Error al eliminar el carrito" };
     }
   }
 
   async addCart(data) {
-      try {
-      const cart = data.products
-      const carts = await this.getCarts();
-      console.log(carts)
-      console.log(cart)
-      console.log(carts.length +1 )
+    //const productId = data.productId;
+    //const quantity = data.quantity;
+    //console.log(productId)
+    //console.log(quantity)
+    const cart = data.products; // Carrito a agregar
+    try {
+      const carts = await this.getCarts(); // Carrito existente
+      //console.log(cart);
+      //console.log(carts);
+      if (!cart) {
+        return { Status: "Debe enviar productos para agregar el carrito" };
+      }
+      const productos = await productsPromise();
+
+
       const newCart = {
         id: carts.length + 1,
-        products : cart
+        products: cart,
       };
-      carts.push(newCart)
-      console.log(cart)
-      await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
-      return ("Carrito cargado correctamente")
+      carts.push(newCart);
+      await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+      return { Status: "Carrito agregado correctamente" };
     } catch (e) {
       console.log("Error al agregar el carrito");
-      return { Error: "Erro al agregar el carrito" };
+      return { Status: "Erro al agregar el carrito" };
     }
   }
 
-  async addCartPid( cid, products ) {
+  async addCartPid(cid, products) {
     const productId = products.productId;
     const quantity = products.quantity;
     const cart = await this.getCarts();
@@ -115,12 +123,12 @@ class CartManager {
       console.log(productId);
       console.log(quantity);
       if (!productId || !quantity) {
-        return { Error: "Campos incompletos" };
+        return { Satatus: "Campos incompletos" };
       }
 
       const existCart = cart.find((ex) => ex.id === cidNumber);
       if (existCart == undefined)
-        return { Error: `El carrrito con id: ${cidNumber} no existe` };
+        return { Status: `El carrrito con id: ${cidNumber} no existe` };
 
       let existProdId = existCart.products.findIndex(
         (prod) => prod.productId === productIdNumber
@@ -130,11 +138,11 @@ class CartManager {
 
       // const exist = cart.findIndex((ex)=>ex.id==id)
       if (existProdId === -1) {
-        console.log("El Producto no existe en el carrito, se agrega")
-        console.log(cart)
+        console.log("El Producto no existe en el carrito, se agrega");
+        console.log(cart);
         // const newCart = {
         //   id: cart.length + 1,
-        //   products, 
+        //   products,
         // };
         // console.log(newCart)
         // cart.push(newCart);
@@ -196,8 +204,8 @@ class CartManager {
       const cart = await this.getCarts();
       const cartIndex = cart.findIndex((cart) => cart.id === pid);
       if (cartIndex === -1) {
-        console.log(`El carto con id: ${id} no existe`);
-        return { Error: `El carto con id: ${id} no existe` };
+        console.log(`El carrito con id: ${id} no existe`);
+        return { Status: `El carrito con id: ${id} no existe` };
       }
       cart[cartIndex].title = title || cart[cartIndex].title;
       cart[cartIndex].description = description || cart[cartIndex].description;
@@ -209,10 +217,10 @@ class CartManager {
       cart[cartIndex].status = status || cart[cartIndex].status;
 
       await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2));
-      console.log(`El carto con id: ${pid} se edito correctamente`);
-      return `El carto con id: ${pid} se edito correctamente`;
+      console.log(`El carrito con id: ${pid} se edito correctamente`);
+      return { Status: `El carrito con id: ${pid} se edito correctamente` };
     } catch (e) {
-      return { Error: "Erro al editar el carto" };
+      return { Status: "Erro al editar el carrito" };
     }
   }
 }
