@@ -91,21 +91,51 @@ class CartManager {
     const cart = data.products; // Carrito a agregar
     try {
       const carts = await this.getCarts(); // Carrito existente
-      //console.log(cart);
-      //console.log(carts);
+      const cartAgregar = [];
+      const cartNoAgregar = [];
+      const cartAgregarPid = [];
+      const productos = await productsPromise(); //productos
+
       if (!cart) {
         return { Status: "Debe enviar productos para agregar el carrito" };
       }
-      const productos = await productsPromise();
 
+      cart.map((productCart) => {
+        const exist = productos.findIndex(
+          (producto) => producto.id === productCart.productId
+        );
+        if (exist === -1) {
+          cartNoAgregar.push(productCart.productId); // productos que NO existen
+        } else {
+          cartAgregar.push(productCart); // productos que existen
+          cartAgregarPid.push(productCart.productId);
+        }
+      });
 
-      const newCart = {
-        id: carts.length + 1,
-        products: cart,
-      };
-      carts.push(newCart);
-      await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
-      return { Status: "Carrito agregado correctamente" };
+      console.log(cartAgregarPid)
+      //const cartAgregarString = cartAgregar.toString();
+      //const cartAgregarString = cartAgregar.findIndex((i)=>1==1);
+      //console.log(cartAgregar)
+      //console.log(cartNoAgregar)
+      const cartNoAgregarString = cartNoAgregar.toString();
+      const cartAgregarStringPid = cartAgregarPid.toString();
+      //console.log(`Los productos ${cartNoAgregarString} no se agregan al carrito porque NO existen en el catalogo`)
+
+      if (cartAgregar != 0) {
+        const newCart = {
+          id: carts.length + 1,
+          products: cartAgregar,
+        };
+        carts.push(newCart);
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+        if (cartNoAgregar != 0) {
+          return { "status" : `Se agregó el carrito ${newCart.id}. Productos agregados: ${cartAgregarStringPid}. Los productos ${cartNoAgregarString} no se agregan porque NO existen en el catalogo`}          
+        } 
+        return { "status" : `Se agregó el carrito ${newCart.id}. Productos agregados: ${cartAgregarStringPid}`}
+      }
+      else {
+        return { "status" : `El carrito NO fue creado porque los productos ${cartNoAgregarString} no existen en el catalogo` }
+      }
     } catch (e) {
       console.log("Error al agregar el carrito");
       return { Status: "Erro al agregar el carrito" };
