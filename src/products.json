@@ -33,17 +33,4 @@
     "stock": 10101010,
     "category": "monitor"
   }
-  ,
-  {
-    "id": 6,
-    "title": "gppppppppppppppppppppppppp",
-    "description": "Desc prodzz",
-    "price": 123123,
-    "thumbnail": [
-      "www.image8.com"
-    ],
-    "code": "abc101010",
-    "stock": 10101010,
-    "category": "monitor"
-  }
 ]
