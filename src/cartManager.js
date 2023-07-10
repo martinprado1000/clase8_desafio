@@ -154,8 +154,6 @@ class CartManager {
         //console.log(productsCart)
         const productCart = productsCart.find((productCart)=>productCart.productId == pid)
         if( productCart == undefined){
-          console.log(productsCart)
-          console.log(products)
           productsCart.push(products)
           await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
           console.log(`No existe el producto ${pid} en el carrito ${cid}, Se agrego el producto`);

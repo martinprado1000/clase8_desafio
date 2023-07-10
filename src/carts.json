@@ -21,6 +21,14 @@
       {
         "productId": 88,
         "quantity": 40
+      },
+      {
+        "productId": 3,
+        "quantity": 30
+      },
+      {
+        "productId": 99,
+        "quantity": 10
       }
     ]
   },
