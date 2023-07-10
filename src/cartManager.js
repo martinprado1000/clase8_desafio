@@ -144,44 +144,30 @@ class CartManager {
         return { Satatus: "Campos incompletos" };
       }
 
-      const existCart = carts.find((cart) => cart.id === cidNumber); // Carrito
-      //console.log(existCart)
-
+      const existCart = await carts.find((cart) => cart.id === cidNumber); // Carrito
+      
       if (existCart === undefined) {
         console.log(`El carrrito con id: ${cidNumber} no existe`);
         return { Status: `El carrrito con id: ${cidNumber} no existe` };
       } else {
         const productsCart = existCart.products;
-        //console.log(productsCart);
-        //console.log(productId);
-        
-        productsCart.map(async(prod) => {
-          if (prod.productId === productId) {
-            console.log(`Existe el producto en el carrito, SUMO`);
-            
-            //console.log(carts)
-
-            console.log(productsCart) // producto a editar
-            console.log(prod) 
-            const indiceProduto = productsCart.findIndex((indice)=> indice.productId == pid) //Indice del producto
-            console.log(indiceProduto)
-            //console.log(cidNumber) // carrito a editar
-            //console.log(quantity)
-            //console.log(prod.quantity)
-            // prod[productIndex].title = title || prod[productIndex].title;
-            let quantitySumado = quantity + prod.quantity
-            //console.log(quantitySumado) // valor de quantity a editar
-            //console.log(carts[cidNumber].products)
-
-            console.log(carts[cidNumber].products[0])
-            //carts[cidNumber].products[prod].quantity = quantitySumado
-            //await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
-            return true
-          } 
-
-        });
-        return ("hola")
-
+        //console.log(productsCart)
+        const productCart = productsCart.find((productCart)=>productCart.productId == pid)
+        if( productCart == undefined){
+          console.log(productsCart)
+          console.log(products)
+          productsCart.push(products)
+          await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+          console.log(`No existe el producto ${pid} en el carrito ${cid}, Se agrego el producto`);
+          return { "Status" : `No existe el producto ${pid} en el carrito ${cid}, Se agrego el producto`}
+        } else {
+          let quantitySumado = quantity + productCart.quantity 
+          const indiceProduto = await productsCart.findIndex((indice)=> indice.productId == pid) //Indice del producto
+          productsCart[indiceProduto].quantity = quantitySumado // Reemplazo el valor de quantity
+          await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+          console.log(`Ya existe el producto ${pid} en el carrito ${cid}, Se Sumo la cantidad al producto`);
+          return { "Status" : `Ya existe el producto ${pid} en el carrito ${cid}, Se Sumo la cantidad al producto`}
+        }
       }
     } catch (e) {
       console.log("Error al agregar el carrito");
