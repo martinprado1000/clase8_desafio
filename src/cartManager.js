@@ -1,16 +1,11 @@
 const fs = require("fs");
 
 const { ProductManager } = require("./productManager");
-//const { exit } = require("process");
-//instacio el ProductManager
 const productsPromise = async () => {
   const pManager = new ProductManager("products.json");
   const prod = await pManager.getProducts();
   return prod;
 };
-// let prod = products().then((d) => {
-//   return d;
-// });
 
 class CartManager {
   constructor(path) {
@@ -84,10 +79,6 @@ class CartManager {
   }
 
   async addCart(data) {
-    //const productId = data.productId;
-    //const quantity = data.quantity;
-    //console.log(productId)
-    //console.log(quantity)
     const cart = data.products; // Carrito a agregar
     try {
       const carts = await this.getCarts(); // Carrito existente
@@ -108,18 +99,12 @@ class CartManager {
           cartNoAgregar.push(productCart.productId); // productos que NO existen
         } else {
           cartAgregar.push(productCart); // productos que existen
-          cartAgregarPid.push(productCart.productId);
+          cartAgregarPid.push(productCart.productId); // id de productos que existen
         }
       });
 
-      console.log(cartAgregarPid)
-      //const cartAgregarString = cartAgregar.toString();
-      //const cartAgregarString = cartAgregar.findIndex((i)=>1==1);
-      //console.log(cartAgregar)
-      //console.log(cartNoAgregar)
       const cartNoAgregarString = cartNoAgregar.toString();
       const cartAgregarStringPid = cartAgregarPid.toString();
-      //console.log(`Los productos ${cartNoAgregarString} no se agregan al carrito porque NO existen en el catalogo`)
 
       if (cartAgregar != 0) {
         const newCart = {
@@ -129,95 +114,75 @@ class CartManager {
         carts.push(newCart);
         await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
         if (cartNoAgregar != 0) {
-          return { "status" : `Se agregó el carrito ${newCart.id}. Productos agregados: ${cartAgregarStringPid}. Los productos ${cartNoAgregarString} no se agregan porque NO existen en el catalogo`}          
-        } 
-        return { "status" : `Se agregó el carrito ${newCart.id}. Productos agregados: ${cartAgregarStringPid}`}
-      }
-      else {
-        return { "status" : `El carrito NO fue creado porque los productos ${cartNoAgregarString} no existen en el catalogo` }
+          return {
+            status: `Se agregó el carrito ${newCart.id}. Con los productos: ${cartAgregarStringPid}. Los productos ${cartNoAgregarString} no se agregan porque NO existen en el catalogo`,
+          };
+        }
+        return {
+          status: `Se agregó el carrito ${newCart.id}. Con los productos: ${cartAgregarStringPid}`,
+        };
+      } else {
+        return {
+          status: `El carrito NO fue creado porque los productos: ${cartNoAgregarString} no existen en el catálogo`,
+        };
       }
     } catch (e) {
       console.log("Error al agregar el carrito");
-      return { Status: "Erro al agregar el carrito" };
+      return { Error: "Erro desconocido al agregar el carrito" };
     }
   }
 
-  async addCartPid(cid, products) {
-    const productId = products.productId;
-    const quantity = products.quantity;
-    const cart = await this.getCarts();
+  async addCartPid(cid, pid, products) {
+    const cidNumber = parseInt(cid); // cid
+    const pidNumber = parseInt(pid); // pid
+    const productId = products.productId; // pid
+    const quantity = products.quantity; // quantity
+    const carts = await this.getCarts(); // Carritos existente
+
     try {
-      let cidNumber = parseInt(cid);
-      let productIdNumber = parseInt(productId);
-      console.log(cid);
-      console.log(productId);
-      console.log(quantity);
       if (!productId || !quantity) {
         return { Satatus: "Campos incompletos" };
       }
 
-      const existCart = cart.find((ex) => ex.id === cidNumber);
-      if (existCart == undefined)
+      const existCart = carts.find((cart) => cart.id === cidNumber); // Carrito
+      //console.log(existCart)
+
+      if (existCart === undefined) {
+        console.log(`El carrrito con id: ${cidNumber} no existe`);
         return { Status: `El carrrito con id: ${cidNumber} no existe` };
-
-      let existProdId = existCart.products.findIndex(
-        (prod) => prod.productId === productIdNumber
-      );
-      console.log(existProdId);
-      //existCart.products.map((prod)=>{console.log(prod.productId)})
-
-      // const exist = cart.findIndex((ex)=>ex.id==id)
-      if (existProdId === -1) {
-        console.log("El Producto no existe en el carrito, se agrega");
-        console.log(cart);
-        // const newCart = {
-        //   id: cart.length + 1,
-        //   products,
-        // };
-        // console.log(newCart)
-        // cart.push(newCart);
-        // await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2));
-        // return "Carrito cargado correctamente";
-        // carts.push(newCart);
-        // await fs.promises.writeFile(this.path, JSON.stringify(newCart, null, 2));
-        // return "Carrito cargado correctamente";
       } else {
-        console.log("si existe");
+        const productsCart = existCart.products;
+        //console.log(productsCart);
+        //console.log(productId);
+        
+        productsCart.map(async(prod) => {
+          if (prod.productId === productId) {
+            console.log(`Existe el producto en el carrito, SUMO`);
+            
+            //console.log(carts)
+
+            console.log(productsCart) // producto a editar
+            console.log(prod) 
+            const indiceProduto = productsCart.findIndex((indice)=> indice.productId == pid) //Indice del producto
+            console.log(indiceProduto)
+            //console.log(cidNumber) // carrito a editar
+            //console.log(quantity)
+            //console.log(prod.quantity)
+            // prod[productIndex].title = title || prod[productIndex].title;
+            let quantitySumado = quantity + prod.quantity
+            //console.log(quantitySumado) // valor de quantity a editar
+            //console.log(carts[cidNumber].products)
+
+            console.log(carts[cidNumber].products[0])
+            //carts[cidNumber].products[prod].quantity = quantitySumado
+            //await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+            return true
+          } 
+
+        });
+        return ("hola")
+
       }
-
-      return "chau";
-      // // parseInt(p.productId) != prod.id
-      // productsPromise().then((productsObj) => {
-      //   //console.log(productsObj)
-      //   const res = productsObj.map((productObj)=>{
-      //    console.log(productObj.id)
-      //     return products.findIndex ((product)=> productObj.id === parseInt(product.productId) )
-      //     //productObj.id != products.productId
-
-      //   })
-      //   //console.log(res)
-      //   for (let i=0; i<res.length ; i++) {
-      //     console.log(res[i])
-      //     if (res[i] == -1){
-      //       console.log("producto inexistente")
-      //       return ("producto inexistente")
-      //     }
-      //   }
-
-      // });
-
-      // const findProduct = prod.findIndex((p)=> p.productId == products.productId)
-      // console.log(findProduct)
-
-      // const cart = await this.getCarts();
-      // const newCart = {
-      //   id: cart.length + 1,
-      //   name,
-      //   products
-      // };
-      // cart.push(newCart);
-      // await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2));
-      // return { Error: "Carrito cargado correctamente" };
     } catch (e) {
       console.log("Error al agregar el carrito");
       return { Error: "Erro al agregar el carrito" };

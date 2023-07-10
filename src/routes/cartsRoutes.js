@@ -63,10 +63,9 @@ const cartAdd = async (req, res) => {
 const cartAddPid = async (req, res) => {
   try{
     const cid = req.params.cid;
-    //console.log(cart)
+    const pid = req.params.pid;
     const data = req.body;
-    //console.log(data);
-    const result = await manager.addCartPid(cid,data);
+    const result = await manager.addCartPid(cid,pid,data);
     //console.log(data)
     res.send(result);
   } catch(e) {
