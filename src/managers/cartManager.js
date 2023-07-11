@@ -2,7 +2,7 @@ const fs = require("fs");
 
 const { ProductManager } = require("./productManager");
 const productsPromise = async () => {
-  const pManager = new ProductManager("products.json");
+  const pManager = new ProductManager("db/products.json");
   const prod = await pManager.getProducts();
   return prod;
 };

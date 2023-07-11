@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Producto rwwwwwwwwwwwwtrtqwe",
+    "description": "Desc prod10",
+    "price": 10101010101,
+    "thumbnail": [
+      "www.image10.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "celular"
+  },
+  {
+    "id": 2,
+    "title": "Producto ",
+    "description": "Desc prod10",
+    "price": 10101010101,
+    "thumbnail": [
+      "www.image10.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "celular"
+  },
+  {
+    "id": 3,
+    "title": "Producto ",
+    "description": "Desc prod10",
+    "price": 10101010101,
+    "thumbnail": [
+      "www.image10.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "celular"
+  },
+  {
+    "id": 4,
+    "title": "Producto ",
+    "description": "Desc prod10",
+    "price": 10101010101,
+    "thumbnail": [
+      "www.image10.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "celular"
+  }
+]

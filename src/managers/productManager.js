@@ -20,10 +20,10 @@ class ProductManager {
     try {
       let products = await fs.promises.readFile(this.path, "utf-8");
       const productsObj = await JSON.parse(products);
-      return productsObj;
+      return productsObj
     } catch (e) {
       console.log("Error al leer el archivo Products");
-      return {"Status": "Error al leer el archivo Products"}
+      return {"status":500 , "respuesta":"Error al leer el archivo Products"}
     }
   }
 
@@ -31,16 +31,16 @@ class ProductManager {
     try {
       if (!id) {
         console.log("Debe enviar un ID valido")
-        return {"Status": "Debe enviar un ID valido"};
+        return {"status":400 , "respuesta": "Debe enviar un ID valido"};
       }
       const productos = await this.getProducts();
       const exist = productos.findIndex((ex)=>ex.id==id)
-      if (exist === -1) return {"Status":`El producto con id: ${id} no existe`}
+      if (exist === -1) return {"status":400 , "respuesta":`El producto con id ${id} no existe`}
       const prodId = productos.find((p) => p.id == id);
-      return prodId;
+      return {"status":200 , "respuesta":prodId};
     } catch (e) {
       console.log("Error al leer el archivo");
-      return {"Status": "Error al leer el archivo"}
+      return {"status":500 , "respuesta":"Error al leer el archivo Products"}
     }
   }
 
@@ -48,28 +48,28 @@ class ProductManager {
     try {
       if (!id) {
         console.log("Debe enviar un ID")
-        return {"Error" : "Debe enviar un ID"}
+        return {"status":400 , "respuesta": "Debe enviar un ID valido"};
       }
       const prod = await this.getProducts();
       const exist = prod.findIndex((ex)=>ex.id==id)
       if (exist === -1) {
-        console.log(`El producto con id: ${id} no existe`)
-        return ({ "Status" : `El producto con id: ${id} no existe` })
+        console.log(`El producto con id ${id} no existe`)
+        return {"status":400 , "respuesta":`El producto con id ${id} no existe`}
     }
       const prodDelete = prod.filter((p) => p.id != id);
       await fs.promises.writeFile(this.path,JSON.stringify(prodDelete, null, 2))
-      console.log(`El producto con id: ${id} se elimino correctamente`)
-      return { "Status" : `El producto con id: ${id} se elimino correctamente` }
+      console.log(`El producto con id ${id} se elimino correctamente`)
+      return { "status":200 , "respuesta" : `El producto con id ${id} se elimino correctamente`}
     } catch (e) {
       console.log("Erro al eliminar el producto");
-      return {"Status": "Error al eliminar el producto"}
+      return {"status":500 , "respuesta":"Error al eliminar el producto"}
     }
   }
     
   async addProduct({ title, description, price, thumbnail, code, stock, category }) {
     try { // thumbnail NO es un campo obligatorio
       if (!title || !description || !price || !code || !stock || !category ) {
-        return {"Status": "Campos incompletos"}
+        return {"status":400 , "respuesta": "Campos incompletos"}
       }
       const produ = await this.getProducts();
       const newProduct = {
@@ -85,10 +85,10 @@ class ProductManager {
       produ.push(newProduct);
       console.log(produ)
       await fs.promises.writeFile(this.path, JSON.stringify(produ, null, 2));
-      return {"Status":"Producto agregado correctamente"}
+      return {"status":201,"respuesta":"Producto agregado correctamente"}
     } catch (e) {
       console.log("Erro al agregar el producto");
-      return {"Error": "Erro al agregar el producto"}
+      return {"status":500,"respuesta": "Erro al agregar el producto"}
     }
   }
 
@@ -98,8 +98,8 @@ class ProductManager {
       const prod = await this.getProducts();
       const productIndex = prod.findIndex((product) => product.id === pid);
       if (productIndex === -1) {
-        console.log(`El producto con id: ${id} no existe`)
-        return {"Status": `El producto con id: ${id} no existe`}
+        console.log(`El producto con id ${id} no existe`)
+        return { "status":400 , "respuesta": `El producto con id ${id} no existe`}
       }
       prod[productIndex].title = title || prod[productIndex].title;
       prod[productIndex].description = description || prod[productIndex].description;
@@ -112,9 +112,9 @@ class ProductManager {
 
       await fs.promises.writeFile(this.path, JSON.stringify(prod, null, 2));
       console.log(`El producto con id: ${pid} se edito correctamente`)
-      return {"Status" : `El producto con id: ${pid} se edito correctamente`}
+      return {"status":201 , "respuesta" : `El producto con id ${pid} se edito correctamente`}
     } catch (e) {
-      return {"Error": "Erro al editar el producto"}
+      return {"status":500 , "respuesta": "Erro al editar el producto"}
     }
   }
 }
