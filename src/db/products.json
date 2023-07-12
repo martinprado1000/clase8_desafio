@@ -1,27 +1,27 @@
 [
   {
     "id": 1,
-    "title": "Producto rwwwwwwwwwwwwtrtqwe",
-    "description": "Desc prod10",
-    "price": 10101010101,
+    "title": "oooooeeeeeeeeeeeeeeeeeo",
+    "description": "Desc prodzz",
+    "price": 123123,
     "thumbnail": [
-      "www.image10.com"
+      "www.image8.com"
     ],
     "code": "abc101010",
     "stock": 10101010,
-    "category": "celular"
+    "category": "monitor"
   },
   {
     "id": 2,
-    "title": "Producto ",
-    "description": "Desc prod10",
-    "price": 10101010101,
+    "title": "oooooeeeeeeeeeeeeeeeeeo",
+    "description": "Desc prodzz",
+    "price": 123123,
     "thumbnail": [
-      "www.image10.com"
+      "www.image8.com"
     ],
     "code": "abc101010",
     "stock": 10101010,
-    "category": "celular"
+    "category": "monitor"
   },
   {
     "id": 3,
@@ -46,5 +46,65 @@
     "code": "abc101010",
     "stock": 10101010,
     "category": "celular"
+  },
+  {
+    "id": 5,
+    "title": "oooooo",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor"
+  },
+  {
+    "id": 6,
+    "title": "oooooo",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor"
+  },
+  {
+    "id": 7,
+    "title": "oooooo",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor"
+  },
+  {
+    "id": 8,
+    "title": "oooooo",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor"
+  },
+  {
+    "id": 9,
+    "title": "oooooeeeeeeeeeeeeeeeeeo",
+    "description": "Desc prodzz",
+    "price": 123123,
+    "thumbnail": [
+      "www.image8.com"
+    ],
+    "code": "abc101010",
+    "stock": 10101010,
+    "category": "monitor"
   }
 ]

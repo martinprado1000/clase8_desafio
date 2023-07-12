@@ -83,8 +83,8 @@ class ProductManager {
         category,
       };
       produ.push(newProduct);
-      console.log(produ)
       await fs.promises.writeFile(this.path, JSON.stringify(produ, null, 2));
+      console.log("Producto agregado correctamente")
       return {"status":201,"respuesta":"Producto agregado correctamente"}
     } catch (e) {
       console.log("Erro al agregar el producto");

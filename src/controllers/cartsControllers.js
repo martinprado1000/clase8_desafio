@@ -3,26 +3,16 @@ const { CartManager } = require("../managers/cartManager");
 //instacio el Cartmanager
 const manager = new CartManager("db/carts.json");
 
-// const { ProductManager } = require("../productManager");
-// //instacio el ProductManager
-// const products = (async()=>{
-//   const pManager = new ProductManager("products.json");
-//   const prod = await pManager.getProducts();
-//   //console.log(prod);
-//   return prod;
-// })
-// products();
-
 //get Carts
 const carts = async (req, res) => {
   try {
     const limitInt = parseInt(req.query.limit);
     //console.log(limitInt);
     const data = await manager.getCarts();
-    if (!limitInt) res.send(data);
+    if (!limitInt) res.json(data);
     else {
       const dataLimit = data.slice(0, limitInt);
-      res.send(dataLimit);
+      res.json(dataLimit);
     }
   } catch (e) {
     console.log(e);
@@ -35,7 +25,7 @@ const cartId = async (req, res) => {
   try{
     const pid = parseInt(req.params.pid);
     const data = await manager.getCartById(pid);
-    res.send(data);
+    res.status(data.status).json(data.respuesta);
   } catch(e) {
     console.log(e);
     return { "Error" : "Algo salio mal con la consulta"}
@@ -50,7 +40,8 @@ const cartAdd = async (req, res) => {
     //console.log(data);
     const result = await manager.addCart(data);
     //console.log(data)
-    res.send(result);
+    //res.send(result);
+    res.status(result.status).send(result.respuesta);
   } catch(e) {
     console.log(e);
     return { "Error" : "Algo salio mal con la consulta"}
@@ -65,7 +56,7 @@ const cartAddPid = async (req, res) => {
     const data = req.body;
     const result = await manager.addCartPid(cid,pid,data);
     //console.log(data)
-    res.send(result);
+    res.status(result.status).send(result.respuesta);
   } catch(e) {
     console.log(e);
     return { "Error" : "Algo salio mal con la consulta"}
@@ -78,7 +69,7 @@ const cartPut = async (req, res) => {
     const pid = req.params.pid;
     const cart = req.body;
     const data = await manager.updateCart(pid,cart);
-    res.send(data);
+    res.status(data.status).send(data.respuesta);
   } catch(e) {
     console.log(e);
     return { "Error" : "Algo salio mal con la consulta"}
@@ -91,7 +82,7 @@ const cartDelete = async (req, res) => {
     const cart = req.params.pid;
     const data = await manager.deleteCart(cart);
     console.log(data)
-    res.send(data);
+    res.status(data.status).send(data.respuesta);
   } catch(e) {
     console.log(e);
     return { "Error" : "Algo salio mal con la consulta"}

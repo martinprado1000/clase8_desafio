@@ -9,10 +9,10 @@ const products = async (req, res) => {
     const limitInt = parseInt(req.query.limit);
     //console.log(limitInt);
     const data = await manager.getProducts();
-    if (!limitInt) res.send(data);
+    if (!limitInt) res.json(data);
     else {
       const dataLimit = data.slice(0, limitInt);
-      res.send(dataLimit);
+      res.json(dataLimit);
     }
   } catch (e) {
     console.log(e);
@@ -25,7 +25,7 @@ const productId = async (req, res) => {
   try{
     const pid = parseInt(req.params.pid);
     const data = await manager.getProductById(pid);
-    res.status(data.status).send(data.respuesta);
+    res.status(data.status).json(data.respuesta);
   } catch(e) {
     console.log(e);
     return { "Error" : "Algo salio mal con la consulta"}

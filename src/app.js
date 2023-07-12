@@ -8,6 +8,7 @@ const cartsRoutes = require ("./routes/cartsRoutes.js")
 //---- Middleware ----
 app.use(express.json()); // Para que espress entienda las extensiones json.
 app.use(express.urlencoded({extended: false})) 
+app.use("/static", express.static("public"));
 
 app.use("/api/",productsRoutes);
 app.use("/api/",cartsRoutes);
